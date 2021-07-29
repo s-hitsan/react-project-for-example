@@ -1,7 +1,7 @@
 .app-wrapper {
-  margin: 0 auto;
+  padding: 0px 10px;
   display: grid;
-  width: 1200px;
+  /* width: 1200px; */
   grid-template-areas:
   "h h"
   "n c";
@@ -9,13 +9,12 @@
    grid-template-rows: 60px 1fr;
    grid-template-columns: 2fr 10fr;
    grid-gap: 10px;
-
+  background-image: url(./assets/images/body-pattern.gif);
 }
 
 .app-wrapper-content {
   grid-area: c;
   background-color: #6aa3f8;
-  border-radius: 10px;
   padding: 15px;
-  border: #223A5E solid 2px;
+  border-radius: 10px 10px 0px 0px;
 }

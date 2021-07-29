@@ -2,18 +2,18 @@ import React, { Suspense } from 'react';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import { Route, withRouter, HashRouter } from 'react-router-dom';
-import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
+import News from './components/News/News';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login';
 import { connect, Provider } from 'react-redux';
 import { initializeApp } from './redux/app-reducer';
 import Preloader from './components/common/preloader';
 import store from './redux/redux-store';
 import { compose } from 'redux';
 const Music = React.lazy(() => import('./components/Music/Music'));
+const Login = React.lazy(() => import('./components/Login/Login'));
+const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
-const News = React.lazy(() => import('./components/News/News'));
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 
 class App extends React.Component {
@@ -37,11 +37,11 @@ class App extends React.Component {
           <Suspense fallback={<div>Loading...</div>}>
             <Route path='/music' render={() => <Music />} />
             <Route path='/dialogs' render={() => <DialogsContainer />} />
-            <Route path='/news' render={() => <News />} />
             <Route path='/settings' render={() => <Settings />} />
-          </Suspense>
-          <Route path='/users' render={() => <UsersContainer />} />
           <Route path='/login' render={() => <Login />} />
+          <Route path='/users' render={() => <UsersContainer />} />
+          </Suspense>
+          <Route path='/news' render={() => <News />} />
         </div>
       </div>
     )
@@ -55,7 +55,7 @@ const mapStateToProps = (state) => ({
 const AppContainer = compose(withRouter, connect(mapStateToProps, { initializeApp }))(App)
 
 const SamuraiJSApp = (props) => {
-  return <HashRouter basename={process.env.PUBLIC_URL}>
+  return <HashRouter>
     <Provider store={store} >
       <AppContainer />
     </Provider>
