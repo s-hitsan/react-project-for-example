@@ -3,12 +3,13 @@ import Preloader from '../../common/preloader';
 import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 import userPhoto from '../../../assets/images/user.png'
 import { useState } from 'react';
-import ProfileDataForm from './ProfileDataForm';
+import ProfileDataForm from './ProfileContact/ProfileDataForm';
+import ProfileData from './ProfileContact/ProfileData';
 
 
 const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto }) => {
 
-  const [editMode, setEditeMode] = useState(false)
+  const [editMode, setEditMode] = useState(false)
 
   if (!profile) {
     return <Preloader />
@@ -28,44 +29,11 @@ const ProfileInfo = ({ profile, status, updateStatus, isOwner, savePhoto }) => {
         <ProfileStatusWithHooks status={status} updateStatus={updateStatus} />
       </div>
     {editMode ? 
-    <ProfileDataForm profile={profile} deactivateEditeMode={()=>{setEditeMode(false)}}/> : 
-    <ProfileData profile={profile} isOwner={isOwner} activateEditeMode={()=>{setEditeMode(true)}}/>}
+    <ProfileDataForm profile={profile} deactivateEditMode={()=>{setEditMode(false)}}/> :
+    <ProfileData profile={profile} isOwner={isOwner} activateEditMode={()=>{setEditMode(true)}}/>}
     </div>
   )
 }
 
-const ProfileData = ({ profile, isOwner, activateEditeMode }) => {
-  return (
-    <div>
-      {isOwner && <button onClick={activateEditeMode}>Edit</button>}
-      <div>
-        <div>
-          <b>{profile.fullName}</b>
-        </div>
-        <div>
-          <b>Looking for a job</b> : {profile.lookingForAJob ? 'yes' : 'no'}
-        </div>
-        {profile.lookingForAJob && <div>
-          <b>My professional skills</b> : {profile.lookingForAJobDescription}
-        </div>}
-        <div>
-          {profile.aboutMe ? <div>About me: {profile.aboutMe}</div> : null}
-        </div>
-      </div>
-      <div className={s.contactTab}>
-        <b>Contacts</b> : {Object.keys(profile.contacts).map(key => {
-          return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
-        })}
-      </div>
-    </div>
-  )
-}
-
-const Contact = ({ contactTitle, contactValue }) => {
-  return (
-    <div className={s.contact}>
-      <b>{contactTitle}</b> : {contactValue}
-    </div>)
-}
 
 export default ProfileInfo;

@@ -28,4 +28,5 @@ export const Input = (props) => {
   )
 }
 
-export const createField = (placeholder, type, name, component) => <Field placeholder={placeholder} type={type} name={name} component={component} />
+export const createField = (placeholder, type, name, component) =>
+    <Field placeholder={placeholder} type={type} name={name} component={component} />

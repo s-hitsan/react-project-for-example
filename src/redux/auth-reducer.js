@@ -2,6 +2,7 @@ import { authAPI } from "../api/api";
 
 const SET_USER_DATA = 'samurai-network/auth/SET_USER_DATA';
 const SET_ERRORS = 'samurai-network/auth/SET_ERRORS';
+const SET_CAPTCHA = 'samurai-network/auth/SET_CAPTCHA'
 
 
 let initialState = {
@@ -10,7 +11,8 @@ let initialState = {
   login: null,
   isFetching: false,
   isAuth: false,
-  errors: ''
+  errors: '',
+  captcha: ''
 }
 
 const authReducer = (state = initialState, action) => {
@@ -25,7 +27,12 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         errors: action.errors
-      } 
+      }
+    case SET_CAPTCHA:
+      return {
+        ...state,
+        captcha: action.captcha
+      }
     default:
       return state;
   }
@@ -33,6 +40,7 @@ const authReducer = (state = initialState, action) => {
 
 const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { id, email, login, isAuth } })
 const setErrors = (errors) => ({ type: SET_ERRORS, errors })
+const setCaptcha = (captcha) => ({type: SET_CAPTCHA, captcha})
 
 export const getAuthUserData = () => async (dispatch) => {
   let response = await authAPI.me()
@@ -51,10 +59,15 @@ export const login = (values) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   let response = await authAPI.logout()
-    if (response.data.resultCode === 0) {
-      dispatch(setAuthUserData(null, null, null, false))
-    }
+  if (response.data.resultCode === 0) {
+    dispatch(setAuthUserData(null, null, null, false))
   }
+}
+
+export const getCaptcha = () => async (dispatch) => {
+  let response = await authAPI.captchaUrl()
+    dispatch(setCaptcha(response.data.url))
+}
 
 
 export default authReducer;
